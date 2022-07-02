@@ -1,5 +1,5 @@
 import {PurchaseHandler} from "./purchase-handler";
-import {ProductData, productDataMap} from "./products";
+import {ProductData, ProductDataMap} from "./products";
 import {
   ANDROID_PACKAGE_ID,
   CLOUD_REGION,
@@ -201,7 +201,8 @@ export class GooglePlayPurchaseHandler extends PurchaseHandler {
           ...event.oneTimeProductNotification,
         };
         // Get the product for this event
-        const productData = productDataMap[subscriptionId ?? sku];
+        const productData =
+          await ProductDataMap.instance(subscriptionId ?? sku);
         // Skip products that are unknown
         if (!productData) return;
         // Skip products that do not match the notification type

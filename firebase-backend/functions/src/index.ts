@@ -1,7 +1,7 @@
 import * as Functions from "firebase-functions";
 
 import * as admin from "firebase-admin";
-import {productDataMap} from "./products";
+import {ProductDataMap} from "./products";
 import {PurchaseHandler} from "./purchase-handler";
 import {GooglePlayPurchaseHandler} from "./google-play.purchase-handler";
 import {AppStorePurchaseHandler} from "./app-store.purchase-handler";
@@ -48,7 +48,7 @@ export const verifyPurchase = functions.https.onCall(
         );
       }
       // Get the product data from the map
-      const productData = productDataMap[data.productId];
+      const productData = await ProductDataMap.instance(data.productId);
       // If it was for an unknown product, do not process it.
       if (!productData) {
         console.warn(`verifyPurchase called for an unknown product ("${data.productId}")`);

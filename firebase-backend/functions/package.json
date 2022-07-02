@@ -17,14 +17,16 @@
   "dependencies": {
     "camelcase-keys": "^7.0.2",
     "firebase-admin": "^10.2.0",
-    "firebase-functions": "^3.21.2",
+    "firebase-functions": "^3.22.0",
     "google-auth-library": "^8.0.2",
     "googleapis": "^104.0.0",
     "lodash": "^4.17.21",
-    "node-apple-receipt-verify": "^1.12.1"
+    "node-apple-receipt-verify": "^1.12.1",
+    "node-fetch": "^2.0.0"
   },
   "devDependencies": {
     "@types/node-apple-receipt-verify": "^1.7.1",
+    "@types/node-fetch": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "eslint": "^8.16.0",

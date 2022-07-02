@@ -1,5 +1,5 @@
 import {PurchaseHandler} from "./purchase-handler";
-import {ProductData, productDataMap} from "./products";
+import {ProductData, ProductDataMap} from "./products";
 import * as appleReceiptVerify from "node-apple-receipt-verify";
 import {APP_STORE_SHARED_SECRET, CLOUD_REGION} from "./constants";
 import {IapRepository} from "./iap.repository";
@@ -72,7 +72,7 @@ export class AppStorePurchaseHandler extends PurchaseHandler {
     // Process the received products
     for (const product of products) {
       // Skip processing the product if it is unknown
-      const productData = productDataMap[product.productId];
+      const productData = await ProductDataMap.instance(product.productId);
       if (!productData) continue;
       // Process the product
       switch (productData.type) {
@@ -147,7 +147,7 @@ export class AppStorePurchaseHandler extends PurchaseHandler {
     );
     // Process receipt items
     for (const iap of latestReceipts) {
-      const productData = productDataMap[iap.productId];
+      const productData = await ProductDataMap.instance(iap.productId);
       // Skip products that are unknown
       if (!productData) continue;
       // Update products in firestore
