@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import 'firebase_options.dart';
 import 'logic/dash_counter.dart';
 import 'logic/dash_purchases.dart';
 import 'logic/dash_upgrades.dart';
@@ -26,10 +24,6 @@ class IAPConnection {
 }
 
 void main() {
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-
   runApp(const MyApp());
 }
 

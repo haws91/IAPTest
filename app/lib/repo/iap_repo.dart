@@ -57,13 +57,13 @@ class IAPRepo extends ChangeNotifier {
         return PastPurchase.fromJson(data);
       }).toList();
 
-      hasActiveSubscription = purchases.any((element) =>
-          element.productId == storeKeySubscription &&
-          element.status != Status.expired);
-
-      hasUpgrade = purchases.any(
-        (element) => element.productId == storeKeyUpgrade,
-      );
+      // hasActiveSubscription = purchases.any((element) =>
+      //     element.productId == storeKeySubscription &&
+      //     element.status != Status.expired);
+      //
+      // hasUpgrade = purchases.any(
+      //   (element) => element.productId == storeKeyUpgrade,
+      // );
 
       notifyListeners();
     });

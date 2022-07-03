@@ -30,14 +30,15 @@ class PastPurchase {
   final Status status;
 
   String get title {
-    switch (productId) {
-      case storeKeyConsumable:
-        return 'Consumable';
-      case storeKeySubscription:
-        return 'Subscription';
-      default:
-        return productId;
-    }
+    // switch (productId) {
+    //   case storeKeyConsumable:
+    //     return 'Consumable';
+    //   case storeKeySubscription:
+    //     return 'Subscription';
+    //   default:
+    //     return productId;
+    // }
+    return productId;
   }
 
   PastPurchase.fromJson(Map<String, dynamic> json)

@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import '../model/cash_product.dart';
 import '../model/purchasable_product.dart';
 import '../model/store_state.dart';
 import '../repo/iap_repo.dart';
@@ -52,13 +54,23 @@ class DashPurchases extends ChangeNotifier {
       return;
     }
 
-    const ids = <String>{
-      storeKeyConsumable,
-      storeKeySubscription,
-      storeKeyUpgrade,
-      storeKey4,
-    };
-    final response = await iapConnection.queryProductDetails(ids);
+    var dio = Dio(BaseOptions(
+      baseUrl: 'http://192.168.219.101:3000',
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+    ));
+
+    print("[dio] ${dio}");
+    final productListresponse = await dio.get('/laudyou-api/cash/product-list-external');
+    print("[productListresponse] ${productListresponse}");
+    List<CashProductModel> productList = (productListresponse.data).map<CashProductModel>((json) {
+      return new CashProductModel(json['productId'], json['productType']);
+    }).toList();
+    print("[productList] ${productList}");
+
+    Set<String> set = productList.map((e) => e.productId).toSet();
+    final response = await iapConnection.queryProductDetails(set);
+
     products =
         response.productDetails.map((e) => PurchasableProduct(e)).toList();
     storeState = StoreState.available;
@@ -108,18 +120,19 @@ class DashPurchases extends ChangeNotifier {
       print("[_handlePurchase] validPurchase: ${validPurchase}");
 
       if (validPurchase) {
+        counter.addBoughtDashes(2000);
         // Apply changes locally
-        switch (purchaseDetails.productID) {
-          case storeKeySubscription:
-            counter.applyPaidMultiplier();
-            break;
-          case storeKeyConsumable:
-            counter.addBoughtDashes(2000);
-            break;
-          case storeKeyUpgrade:
-            _beautifiedDashUpgrade = true;
-            break;
-        }
+        // switch (purchaseDetails.productID) {
+        //   case storeKeySubscription:
+        //     counter.applyPaidMultiplier();
+        //     break;
+        //   case storeKeyConsumable:
+        //     counter.addBoughtDashes(2000);
+        //     break;
+        //   case storeKeyUpgrade:
+        //     _beautifiedDashUpgrade = true;
+        //     break;
+        // }
       }
     }
 
@@ -166,11 +179,11 @@ class DashPurchases extends ChangeNotifier {
     print("[purchasesUpdate]");
     if (products.isNotEmpty) {
       subscriptions = products
-          .where((element) => element.productDetails.id == storeKeySubscription)
+          .where((element) => element.productDetails.id != null)
           .toList();
-      upgrades = products
-          .where((element) => element.productDetails.id == storeKeyUpgrade)
-          .toList();
+      // upgrades = products
+      //     .where((element) => element.productDetails.id == storeKeyUpgrade)
+      //     .toList();
     }
 
     // Set the subscription in the counter logic and show/hide purchased on the
